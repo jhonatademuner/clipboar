@@ -20,7 +20,7 @@ public class ClipboardController {
     }
 
     @PostMapping
-    public ResponseEntity<Clipboard> create(@RequestBody ClipboardDTO clipboardData, HttpServletRequest request) {
+    public ResponseEntity<String> create(@RequestBody ClipboardDTO clipboardData, HttpServletRequest request) {
         String clientIpAddress = null;
 
         if(clipboardData.settings().isNetworkVisible()){
@@ -28,7 +28,7 @@ public class ClipboardController {
         }
 
         Clipboard newClipboard = this.clipboardService.create(clipboardData, clientIpAddress);
-        return ResponseEntity.ok().body(newClipboard);
+        return ResponseEntity.ok().body(newClipboard.getSharingCode());
     }
 
     @GetMapping("/network")
@@ -47,6 +47,11 @@ public class ClipboardController {
     public ResponseEntity<Clipboard> update(@PathVariable("id") String id, @RequestBody ClipboardDTO clipboardData){
         Clipboard clipboard = this.clipboardService.update(id, clipboardData);
         return ResponseEntity.ok().body(clipboard);
+    }
+
+    @DeleteMapping("/all")
+    public void deleteAll(){
+        this.clipboardService.deleteAll();
     }
 
     private String getClientIpAddress(HttpServletRequest request) {
