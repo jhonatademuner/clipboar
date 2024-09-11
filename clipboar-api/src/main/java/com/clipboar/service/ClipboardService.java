@@ -80,6 +80,7 @@ public class ClipboardService {
 
     public String readBySharingCode(String id){
         Clipboard clipboard = this.clipboardRepository.findBySharingCode(id);
+        if(clipboard == null) throw new ClipboardNotFoundException("Clipboard with code " + id + " not found.");
         String sharingCode = clipboard.getSharingCode();
         try{
             return AESUtil.decrypt(clipboard.getContent(), AESUtil.repeatToLength(sharingCode, 16));
@@ -96,6 +97,10 @@ public class ClipboardService {
         clipboard.setLastModifiedDate(new Date());
         this.clipboardRepository.save(clipboard);
         return clipboard;
+    }
+
+    public void deleteAll(){
+        this.clipboardRepository.deleteAll();
     }
 
     private String generateCode() {
