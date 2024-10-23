@@ -43,17 +43,6 @@ public class ClipboardController {
         return ResponseEntity.ok().body(clipboardContent);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Clipboard> update(@PathVariable("id") String id, @RequestBody ClipboardDTO clipboardData){
-        Clipboard clipboard = this.clipboardService.update(id, clipboardData);
-        return ResponseEntity.ok().body(clipboard);
-    }
-
-    @DeleteMapping("/all")
-    public void deleteAll(){
-        this.clipboardService.deleteAll();
-    }
-
     private String getClientIpAddress(HttpServletRequest request) {
         String clientIp = request.getHeader("X-Forwarded-For");
         if (clientIp == null || clientIp.isEmpty()) {

@@ -89,20 +89,6 @@ public class ClipboardService {
         }
     }
 
-    public Clipboard update(String id, ClipboardDTO clipboardData){
-        Clipboard clipboard = this.clipboardRepository.findById(id).orElseThrow(ClipboardNotFoundException::new);
-        if(!clipboardData.content().isEmpty()) clipboard.setContent(clipboardData.content());
-        if(clipboardData.settings() != null) clipboard.setSettings(clipboardData.settings());
-        if(!clipboardData.sharingCode().isEmpty()) clipboard.setSharingCode(clipboardData.sharingCode());
-        clipboard.setLastModifiedDate(new Date());
-        this.clipboardRepository.save(clipboard);
-        return clipboard;
-    }
-
-    public void deleteAll(){
-        this.clipboardRepository.deleteAll();
-    }
-
     private String generateCode() {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         return uuid.substring(0, Math.min(uuid.length(), 6));
